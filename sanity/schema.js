@@ -1,0 +1,122 @@
+import { defineType, defineField } from 'sanity'
+
+export default defineType({
+  name: 'page',
+  title: 'Page',
+  type: 'document',
+  fields: [
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'title',
+        maxLength: 96,
+      },
+      validation: Rule => Rule.required()
+    }),
+    defineField({
+      name: 'text',
+      title: 'Plain Text (for SEO)',
+      type: 'text',
+      description: 'Plain text version of the content for SEO and preview purposes'
+    }),
+    defineField({
+      name: 'content',
+      title: 'Content (Rich Text)',
+      type: 'array',
+      of: [
+        {
+          type: 'block',
+          styles: [
+            { title: 'Normal', value: 'normal' },
+            { title: 'H1', value: 'h1' },
+            { title: 'H2', value: 'h2' },
+            { title: 'H3', value: 'h3' },
+            { title: 'H4', value: 'h4' },
+            { title: 'H5', value: 'h5' },
+            { title: 'H6', value: 'h6' },
+            { title: 'Quote', value: 'blockquote' }
+          ],
+          marks: {
+            decorators: [
+              { title: 'Strong', value: 'strong' },
+              { title: 'Emphasis', value: 'em' },
+              { title: 'Code', value: 'code' },
+              { title: 'Underline', value: 'underline' },
+              { title: 'Strike', value: 'strike-through' }
+            ],
+            annotations: [
+              {
+                name: 'link',
+                type: 'object',
+                title: 'Link',
+                fields: [
+                  {
+                    name: 'href',
+                    type: 'url',
+                    title: 'URL'
+                  },
+                  {
+                    name: 'blank',
+                    type: 'boolean',
+                    title: 'Open in new tab'
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          type: 'image',
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative text'
+            }
+          ]
+        }
+      ],
+      description: 'Rich text content converted from HTML'
+    }),
+    defineField({
+      name: 'rawHTML',
+      title: 'Raw HTML Content (Legacy)',
+      type: 'text',
+      description: 'Original HTML content from WordPress. Kept for reference or fallback.',
+      hidden: true // Hide from Studio UI but keep in schema
+    }),
+    defineField({
+      name: 'url',
+      title: 'Original URL',
+      type: 'url',
+      description: 'Original WordPress URL (for reference)'
+    }),
+    defineField({
+      name: 'language',
+      title: 'Language',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'English', value: 'en' },
+          { title: 'Chinese', value: 'zh' }
+        ]
+      },
+      initialValue: 'en'
+    })
+  ],
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'slug.current'
+    }
+  }
+})
+

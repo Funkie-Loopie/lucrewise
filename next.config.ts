@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  transpilePackages: ['next-sanity', '@sanity/visual-editing'],
 };
 
 export default nextConfig;
