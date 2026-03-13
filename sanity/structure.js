@@ -2,6 +2,18 @@ export const structure = (S) =>
   S.list()
     .title('Content')
     .items([
+      // ── Site Settings (singleton) ─────────────────────────
+      S.listItem()
+        .title('⚙️ Site Settings')
+        .child(
+          S.editor()
+            .title('Site Settings')
+            .schemaType('siteSettings')
+            .documentId('siteSettings')
+        ),
+
+      S.divider(),
+
       // Pages Section - Main landing pages grouped under Pages folder
       S.listItem()
         .title('Pages')

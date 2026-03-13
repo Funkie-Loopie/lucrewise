@@ -7,11 +7,6 @@ export default function ContentPage({ content }) {
         {content.title}
       </h1>
 
-      {/* 纯文本版，方便 SEO / 预览 */}
-      {content.text && (
-        <p style={{ marginBottom: "2rem", lineHeight: 1.6 }}>{content.text}</p>
-      )}
-
       {/* Rich Text Content (Portable Text) */}
       {content.content && content.content.length > 0 ? (
         <PortableTextRenderer content={content.content} />

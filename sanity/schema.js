@@ -129,6 +129,29 @@ export default defineType({
         ]
       },
       initialValue: 'en'
+    }),
+    // Single tag selected from a dropdown of 6 fixed options
+    // Only shown for blog posts (slug starting with "blog-")
+    defineField({
+      name: 'tag',
+      title: 'Tag',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Overall Planning', value: 'Overall Planning' },
+          { title: 'Investment Strategy', value: 'Investment Strategy' },
+          { title: 'Insurance Guidance', value: 'Insurance Guidance' },
+          { title: 'Retirement Planning', value: 'Retirement Planning' },
+          { title: 'Employer Services', value: 'Employer Services' },
+          { title: 'Tax Planning', value: 'Tax Planning' },
+        ],
+        layout: 'dropdown',
+      },
+      hidden: ({document}) => {
+        const slug = document?.slug?.current || ''
+        return !slug.startsWith('blog-')
+      },
+      description: 'Select one tag for this blog post or page'
     })
   ],
   preview: {

@@ -1,17 +1,38 @@
 import { getSanityPage } from "@/lib/get-sanity-page";
-import ContentPage from "@/components/ContentPage";
+import ServicesIndex from "@/components/ServicesIndex";
+
+const SERVICE_SLUGS = [
+  { slug: 'tax-consultation',         path: 'tax-consultation' },
+  { slug: 'insurance-consulting',     path: 'insurance-consulting' },
+  { slug: 'investment-opportunities', path: 'investment-opportunities' },
+  { slug: 'business-all-in-one',      path: 'business-all-in-one' },
+  { slug: 'philanthropic-service',    path: 'philanthropic-service' },
+];
 
 export default async function Page() {
-  const content = await getSanityPage('services', 'zh');
-  
-  if (!content) {
-    return (
-      <main style={{ padding: "3rem 1.5rem", maxWidth: 960, margin: "0 auto" }}>
-        <h1>Page not found</h1>
-        <p>The requested page could not be found in Sanity.</p>
-      </main>
-    );
-  }
-  
-  return <ContentPage content={content} />;
+  // Prefer ZH for the landing page content, fallback to EN
+  const contentZh = await getSanityPage('services', 'zh');
+  const pageContent = contentZh || (await getSanityPage('services', 'en'));
+
+  const servicePages = await Promise.all(
+    SERVICE_SLUGS.map(async ({ slug, path }) => {
+      const dataZh = await getSanityPage(slug, 'zh');
+      const data = dataZh || (await getSanityPage(slug, 'en'));
+      return {
+        slug,
+        href: `/zh/services/${path}`,
+        title: data?.title || slug,
+        text: data?.text || null,
+        content: data?.content || null,
+      };
+    })
+  );
+
+  return (
+    <ServicesIndex
+      pageContent={pageContent}
+      services={servicePages}
+      isChinese={true}
+    />
+  );
 }

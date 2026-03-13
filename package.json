@@ -15,7 +15,8 @@
     "update:services": "node scripts/update-services-slug.js",
     "update:contact": "node scripts/update-contact-slug.js",
     "update:pages": "node scripts/update-pages-to-sanity.js",
-    "fix:blogs:zh": "node scripts/fix-blog-chinese.js"
+    "fix:blogs:zh": "node scripts/fix-blog-chinese.js",
+    "fix:blogs:tags": "node scripts/auto-assign-blog-tags.js"
   },
   "dependencies": {
     "@portabletext/react": "^6.0.0",
