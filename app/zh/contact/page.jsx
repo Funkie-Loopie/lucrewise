@@ -2,7 +2,7 @@ import { getSanityPage } from "@/lib/get-sanity-page";
 import ContentPage from "@/components/ContentPage";
 
 export default async function Page() {
-  const content = await getSanityPage('contact-2', 'zh');
+  const content = await getSanityPage('contact', 'zh');
   
   if (!content) {
     return (

@@ -70,7 +70,7 @@ function categorizePage(slug) {
     slug === "pricing"
   ) {
     // Special case: main services page stays at /services/page.jsx
-    if (slug === "services" || slug === "services-2") {
+    if (slug === "services") {
       return { category: "services", newSlug: slug === "services" ? "" : "services-2" };
     }
     return { category: "services", newSlug: slug };
@@ -165,3 +165,4 @@ function main() {
 }
 
 main();
+}

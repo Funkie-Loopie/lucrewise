@@ -18,6 +18,25 @@ export default defineType({
       options: {
         source: 'title',
         maxLength: 96,
+        // Allow the same slug to be reused for different languages
+        // e.g. "home" with language = "en" and "home" with language = "zh"
+        isUnique: (slug, context) => {
+          const { document, getClient } = context
+          const client = getClient({ apiVersion: '2024-01-01' })
+          const language = document?.language || 'en'
+          const id = document?._id.replace(/^drafts\./, '')
+
+          // Only enforce uniqueness within the same language
+          const params = { slug, language, id }
+          const query = `!defined(*[
+            _type == "page" &&
+            slug.current == $slug &&
+            language == $language &&
+            !(_id in [$id, "drafts." + $id])
+          ][0]._id)`
+
+          return client.fetch(query, params)
+        },
       },
       validation: Rule => Rule.required()
     }),

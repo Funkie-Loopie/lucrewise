@@ -6,7 +6,7 @@ import ContentPage from "@/components/ContentPage";
 
 export default async function Page() {
   // Fetch data from Sanity instead of JSON file
-  const content = await getPageBySlug('services-2', 'en');
+  const content = await getPageBySlug('services', 'en');
   
   // Handle case where page doesn't exist
   if (!content) {
@@ -23,5 +23,5 @@ export default async function Page() {
 }
 
 // For Chinese pages, use:
-// const content = await getPageBySlug('services-2', 'zh');
+// const content = await getPageBySlug('services', 'zh');
 
