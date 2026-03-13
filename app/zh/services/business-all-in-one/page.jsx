@@ -1,6 +1,17 @@
-import content from "@/data/%e4%bc%81%e4%b8%9a%e4%b8%80%e7%ab%99%e5%bc%8f.json";
+import { getSanityPage } from "@/lib/get-sanity-page";
 import ContentPage from "@/components/ContentPage";
 
-export default function Page() {
+export default async function Page() {
+  const content = await getSanityPage('business-all-in-one', 'zh');
+  
+  if (!content) {
+    return (
+      <main style={{ padding: "3rem 1.5rem", maxWidth: 960, margin: "0 auto" }}>
+        <h1>Page not found</h1>
+        <p>The requested page could not be found in Sanity.</p>
+      </main>
+    );
+  }
+  
   return <ContentPage content={content} />;
 }

@@ -1,6 +1,7 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import pageSchema from './sanity/schema.js'
+import { structure } from './sanity/structure.js'
 
 // Sanity project configuration
 // Works with both Next.js (process.env) and Vite (import.meta.env)
@@ -25,7 +26,11 @@ export default defineConfig({
   projectId,
   dataset,
   
-  plugins: [structureTool()],
+  plugins: [
+    structureTool({
+      structure,
+    }),
+  ],
   
   schema: {
     types: [pageSchema],
