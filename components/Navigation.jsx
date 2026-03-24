@@ -29,11 +29,9 @@ export default function Navigation({ settings }) {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Use Sanity nav items if available, otherwise fall back to defaults
   const rawNav =
     settings?.headerNavItems?.length > 0 ? settings.headerNavItems : DEFAULT_NAV;
 
-  // Resolve full paths and pick the right language label
   const navItems = rawNav.map((item) => {
     const isHome = item.href === "/" || item.href === "";
     const path = isHome ? (isChinese ? "/zh" : "/") : `${prefix}${item.href}`;
@@ -44,7 +42,6 @@ export default function Navigation({ settings }) {
     };
   });
 
-  // Language switcher alternate path
   let alternatePath = isChinese
     ? pathname.replace(/^\/zh/, "") || "/"
     : "/zh" + pathname;
@@ -52,46 +49,25 @@ export default function Navigation({ settings }) {
     alternatePath = isChinese ? "/" : "/zh";
   }
 
-  const linkStyle = (isActive) => ({
-    textDecoration: "none",
-    color: isActive ? "#2563eb" : "#4b5563",
-    fontWeight: isActive ? 600 : 400,
-    fontSize: "0.9375rem",
-    transition: "color 0.2s",
-    whiteSpace: "nowrap",
-  });
-
   const isActive = (href) =>
     pathname === href ||
     (href === "/" && pathname === "/") ||
     (href === "/zh" && (pathname === "/zh" || pathname === "/zh/")) ||
     pathname.startsWith(href + "/");
 
+  const siteName = settings?.siteName || "Golden Blue Family Office";
+
   return (
-    <nav
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-        backgroundColor: "rgba(255, 255, 255, 0.95)",
-        backdropFilter: "blur(10px)",
-        borderBottom: "1px solid #e5e7eb",
-        padding: "1rem 1.5rem",
-        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-      }}
-    >
-      <div style={{ maxWidth: 1200, margin: "0 auto" }} className="nav-container">
+    <nav className="nav-wrapper">
+      <div className="nav-inner">
         {/* Logo */}
-        <Link
-          href={isChinese ? "/zh" : "/"}
-          style={{ fontSize: "1.25rem", fontWeight: 700, textDecoration: "none", color: "#1f2937" }}
-        >
-          {settings?.siteName || "Lucrewise"}
+        <Link href={isChinese ? "/zh" : "/"} className="nav-logo">
+          {siteName}
         </Link>
 
         {/* Hamburger */}
         <button
-          className="mobile-menu-button"
+          className="nav-hamburger"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -100,67 +76,26 @@ export default function Navigation({ settings }) {
 
         {/* Desktop nav */}
         {!isMobile && (
-          <div className="nav-links">
+          <div className="nav-links-desktop">
             {navItems.map((item) => (
               <Link
                 key={item.key}
                 href={item.path}
-                style={linkStyle(isActive(item.path))}
-                onMouseEnter={(e) => {
-                  if (!isActive(item.path)) e.target.style.color = "#2563eb";
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive(item.path)) e.target.style.color = "#4b5563";
-                }}
+                className={`nav-link${isActive(item.path) ? " nav-link--active" : ""}`}
               >
                 {item.label}
               </Link>
             ))}
 
-            {/* Language Switcher */}
-            <Link
-              href={alternatePath}
-              style={{
-                textDecoration: "none",
-                color: "#4b5563",
-                fontWeight: 400,
-                fontSize: "0.875rem",
-                padding: "0.5rem 1rem",
-                border: "1px solid #e5e7eb",
-                borderRadius: "0.5rem",
-                transition: "all 0.2s",
-                whiteSpace: "nowrap",
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.color = "#2563eb";
-                e.target.style.borderColor = "#2563eb";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.color = "#4b5563";
-                e.target.style.borderColor = "#e5e7eb";
-              }}
-            >
+            <Link href={alternatePath} className="nav-lang-btn">
               {isChinese ? "English" : "中文"}
             </Link>
 
-            {/* Book a Call CTA */}
             <a
               href="https://calendly.com/pljw-financial/30min"
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                textDecoration: "none",
-                color: "#ffffff",
-                backgroundColor: "#2563eb",
-                fontWeight: 600,
-                fontSize: "0.875rem",
-                padding: "0.5rem 1rem",
-                borderRadius: "0.5rem",
-                transition: "background-color 0.2s",
-                whiteSpace: "nowrap",
-              }}
-              onMouseEnter={(e) => { e.target.style.backgroundColor = "#1d4ed8"; }}
-              onMouseLeave={(e) => { e.target.style.backgroundColor = "#2563eb"; }}
+              className="nav-cta"
             >
               {isChinese ? "免費預約" : "Book a Call"}
             </a>
@@ -169,72 +104,33 @@ export default function Navigation({ settings }) {
       </div>
 
       {/* Mobile menu */}
-      {isMobile && isMobileMenuOpen && (
-        <div className="mobile-menu open">
+      {isMobile && (
+        <div className={`nav-mobile${isMobileMenuOpen ? " open" : ""}`}>
           {navItems.map((item) => (
             <Link
               key={item.key}
               href={item.path}
-              style={{
-                textDecoration: "none",
-                color: isActive(item.path) ? "#2563eb" : "#4b5563",
-                fontWeight: isActive(item.path) ? 600 : 400,
-                fontSize: "1rem",
-                padding: "1rem 0",
-                borderBottom: "1px solid #e5e7eb",
-                display: "block",
-                width: "100%",
-              }}
+              className={`nav-mobile-link${isActive(item.path) ? " nav-mobile-link--active" : ""}`}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {item.label}
             </Link>
           ))}
-
-          <div style={{ marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid #e5e7eb" }}>
+          <div className="nav-mobile-actions">
             <Link
               href={alternatePath}
-              style={{
-                textDecoration: "none",
-                color: "#4b5563",
-                fontWeight: 400,
-                fontSize: "0.875rem",
-                padding: "0.75rem 1.5rem",
-                border: "1px solid #e5e7eb",
-                borderRadius: "0.5rem",
-                display: "inline-block",
-                transition: "all 0.2s",
-              }}
+              className="nav-lang-btn"
+              style={{ textAlign: "center" }}
               onClick={() => setIsMobileMenuOpen(false)}
-              onMouseEnter={(e) => {
-                e.target.style.color = "#2563eb";
-                e.target.style.borderColor = "#2563eb";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.color = "#4b5563";
-                e.target.style.borderColor = "#e5e7eb";
-              }}
             >
               {isChinese ? "English" : "中文"}
             </Link>
-
-            {/* Book a Call — mobile */}
             <a
               href="https://calendly.com/pljw-financial/30min"
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                display: "block",
-                marginTop: "0.75rem",
-                textDecoration: "none",
-                color: "#ffffff",
-                backgroundColor: "#2563eb",
-                fontWeight: 600,
-                fontSize: "1rem",
-                padding: "0.85rem 1.5rem",
-                borderRadius: "0.5rem",
-                textAlign: "center",
-              }}
+              className="nav-cta"
+              style={{ textAlign: "center", display: "block", padding: "0.75rem 1.25rem" }}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {isChinese ? "免費預約咨詢" : "Book a Free Call"}

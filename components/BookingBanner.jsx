@@ -9,43 +9,39 @@ export default function BookingBanner() {
   const isChinese = pathname.startsWith("/zh");
 
   return (
-    <section
-      style={{
-        backgroundColor: "#ffffff",
-        borderTop: "1px solid #e5e7eb",
-        padding: "2.5rem 1.5rem",
-        textAlign: "center",
-      }}
-    >
-      <div style={{ maxWidth: 600, margin: "0 auto" }}>
-        <p style={{ fontSize: "0.8125rem", fontWeight: 600, letterSpacing: "0.08em", color: "#2563eb", textTransform: "uppercase", marginBottom: "0.5rem" }}>
+    <section className="booking-banner">
+      <div className="booking-banner-inner">
+        <p className="section-label section-label--light">
           {isChinese ? "免費咨詢" : "Free Consultation"}
         </p>
-        <h2 style={{ fontSize: "1.375rem", fontWeight: 700, color: "#111827", marginBottom: "0.5rem", lineHeight: 1.4 }}>
-          {isChinese ? "準備好開始規劃您的財務未來了嗎？" : "Ready to plan your financial future?"}
+        <h2 style={{
+          fontSize: "clamp(1.5rem, 3vw, 2rem)",
+          fontWeight: 700,
+          color: "#fff",
+          marginBottom: "0.875rem",
+          lineHeight: 1.25,
+        }}>
+          {isChinese
+            ? "準備好開始規劃您的財務未來了嗎？"
+            : "Ready to plan your financial future?"}
         </h2>
-        <p style={{ fontSize: "0.9375rem", color: "#6b7280", marginBottom: "1.5rem", lineHeight: 1.6 }}>
+        <p style={{
+          fontSize: "1rem",
+          color: "rgba(255,255,255,0.68)",
+          marginBottom: "2.25rem",
+          lineHeight: 1.7,
+          maxWidth: 480,
+          marginInline: "auto",
+        }}>
           {isChinese
             ? "預約一次免費的 30 分鐘咨詢。"
-            : "Book a free 30-minute consultation."}
+            : "Book a free 30-minute consultation and take the first step toward financial clarity."}
         </p>
         <a
           href={CALENDLY_URL}
           target="_blank"
           rel="noopener noreferrer"
-          style={{
-            display: "inline-block",
-            backgroundColor: "#2563eb",
-            color: "#ffffff",
-            textDecoration: "none",
-            padding: "0.65rem 1.75rem",
-            borderRadius: "0.5rem",
-            fontWeight: 600,
-            fontSize: "0.9375rem",
-            transition: "background-color 0.2s",
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1d4ed8"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#2563eb"; }}
+          className="btn btn--lg btn-white"
         >
           {isChinese ? "立即預約 →" : "Book Now →"}
         </a>
