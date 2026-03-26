@@ -42,9 +42,9 @@ export default defineType({
     }),
     defineField({
       name: 'text',
-      title: 'Plain Text (for SEO)',
+      title: 'Excerpt',
       type: 'text',
-      description: 'Plain text version of the content for SEO and preview purposes'
+      description: 'A short summary shown in cards, search results, and meta descriptions. Keep it under 160 characters.'
     }),
     defineField({
       name: 'content',

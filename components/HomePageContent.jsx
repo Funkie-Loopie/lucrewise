@@ -82,17 +82,19 @@ export default function HomePageContent({ services, isChinese, homeData: d }) {
 
           <div className="home-services-grid">
             {services.map((service) => {
-              const desc = service.text || truncate(plainText(service.content));
+              const desc = service.text || truncate(plainText(service.content), 110);
               return (
-                <div key={service.slug} className="home-service-card card card--elevated">
-                  <div className="home-service-card__icon">
-                    {SERVICE_ABBRS[service.slug] || '◆'}
+                <div key={service.slug} className="home-service-card">
+                  <div className="home-service-card__inner">
+                    <div className="home-service-card__icon">
+                      {SERVICE_ABBRS[service.slug] || '◆'}
+                    </div>
+                    <h3 className="home-service-card__title">{service.title}</h3>
+                    {desc && <p className="home-service-card__desc">{desc}</p>}
+                    <Link href={`${prefix}/services/${service.slug}`} className="link-arrow">
+                      {d?.servicesLearnMoreLabel || 'Learn More'} →
+                    </Link>
                   </div>
-                  <h3 className="home-service-card__title">{service.title}</h3>
-                  {desc && <p className="home-service-card__desc">{desc}</p>}
-                  <Link href={`${prefix}/services/${service.slug}`} className="link-arrow">
-                    {d?.servicesLearnMoreLabel || 'Learn More'} →
-                  </Link>
                 </div>
               );
             })}

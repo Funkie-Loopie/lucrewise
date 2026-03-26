@@ -23,7 +23,7 @@ export default function AboutPage({ data }) {
   return (
     <main>
       {/* ── Hero / Intro ─────────────────────────────────────── */}
-      <section className="about-hero section--navy section--lg">
+      <section className="about-hero section--light section--lg">
         <div className="container">
           <p className="about-hero__label">About Us</p>
           <h1 className="about-hero__title">{pageTitle}</h1>
@@ -31,13 +31,13 @@ export default function AboutPage({ data }) {
         </div>
       </section>
 
-      {/* ── Founders Grid ────────────────────────────────────── */}
+      {/* ── Founders ─────────────────────────────────────────── */}
       {founders.length > 0 && (
         <section className="about-founders section section--white">
           <div className="container">
             <div className="about-founders__grid">
               {founders.map((founder, i) => (
-                <article key={i} className="founder-card">
+                <div key={i} className="founder-card">
                   <div className="founder-card__photo-wrap">
                     {founder.photo?.asset?.url ? (
                       <Image
@@ -62,7 +62,7 @@ export default function AboutPage({ data }) {
                       <p className="founder-card__intro">{founder.intro}</p>
                     )}
                   </div>
-                </article>
+                </div>
               ))}
             </div>
           </div>

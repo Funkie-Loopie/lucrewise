@@ -62,7 +62,7 @@ export const structure = (S) =>
         .child(
           S.documentList()
             .title('Pages')
-            .filter('_type == "page" && (slug.current == "home" || slug.current == "about-us" || slug.current == "services" || slug.current == "blog" || slug.current == "blogs" || slug.current == "博客" || slug.current == "contact" || slug.current == "联系我们")')
+            .filter('_type == "page" && (slug.current == "services" || slug.current == "blog" || slug.current == "blogs" || slug.current == "博客" || slug.current == "contact" || slug.current == "联系我们")')
             .defaultOrdering([
               { field: 'slug.current', direction: 'asc' },
               { field: 'language', direction: 'asc' }
