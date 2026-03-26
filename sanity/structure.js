@@ -35,6 +35,27 @@ export const structure = (S) =>
 
       S.divider(),
 
+      // ── About Page (singletons per language) ──────────────────────
+      S.listItem()
+        .title('👤 About Page (EN)')
+        .child(
+          S.editor()
+            .title('About Page — English')
+            .schemaType('aboutPage')
+            .documentId('aboutPage-en')
+        ),
+
+      S.listItem()
+        .title('👤 About Page (ZH)')
+        .child(
+          S.editor()
+            .title('About Page — Chinese')
+            .schemaType('aboutPage')
+            .documentId('aboutPage-zh')
+        ),
+
+      S.divider(),
+
       // Pages Section - Main landing pages grouped under Pages folder
       S.listItem()
         .title('Pages')

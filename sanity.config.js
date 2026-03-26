@@ -3,6 +3,7 @@ import { structureTool } from 'sanity/structure'
 import pageSchema from './sanity/schema.js'
 import siteSettingsSchema from './sanity/site-settings-schema.js'
 import homePageSchema from './sanity/home-page-schema.js'
+import aboutPageSchema from './sanity/about-page-schema.js'
 import { structure } from './sanity/structure.js'
 
 // Sanity project configuration
@@ -35,7 +36,7 @@ export default defineConfig({
   ],
   
   schema: {
-    types: [pageSchema, siteSettingsSchema, homePageSchema],
+    types: [pageSchema, siteSettingsSchema, homePageSchema, aboutPageSchema],
   },
 })
 
