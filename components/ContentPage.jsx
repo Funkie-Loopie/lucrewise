@@ -2,21 +2,18 @@ import PortableTextRenderer from '@/lib/portable-text-renderer'
 
 export default function ContentPage({ content }) {
   return (
-    <main style={{ padding: "3rem 1.5rem", maxWidth: 960, margin: "0 auto" }}>
-      <h1 style={{ fontSize: "2.25rem", fontWeight: 700, marginBottom: "1.5rem" }}>
-        {content.title}
-      </h1>
+    <main className="content-page">
+      <header className="page-header">
+        <h1 className="page-header__title">{content.title}</h1>
+      </header>
 
-      {/* Rich Text Content (Portable Text) */}
       {content.content && content.content.length > 0 ? (
         <PortableTextRenderer content={content.content} />
       ) : (
-        /* Fallback to raw HTML if Portable Text is not available */
         content.rawHTML && (
-          <div dangerouslySetInnerHTML={{ __html: content.rawHTML }} />
+          <div className="prose-content" dangerouslySetInnerHTML={{ __html: content.rawHTML }} />
         )
       )}
     </main>
-  );
+  )
 }
-

@@ -138,12 +138,10 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          { title: 'Overall Planning', value: 'Overall Planning' },
-          { title: 'Investment Strategy', value: 'Investment Strategy' },
-          { title: 'Insurance Guidance', value: 'Insurance Guidance' },
-          { title: 'Retirement Planning', value: 'Retirement Planning' },
-          { title: 'Employer Services', value: 'Employer Services' },
+          { title: 'Pre-IPO Opportunities', value: 'Pre-IPO Opportunities' },
           { title: 'Tax Planning', value: 'Tax Planning' },
+          { title: 'Retirement Planning', value: 'Retirement Planning' },
+          { title: 'Estate Planning', value: 'Estate Planning' },
         ],
         layout: 'dropdown',
       },
