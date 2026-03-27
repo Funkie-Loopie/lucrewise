@@ -542,7 +542,7 @@ p { line-height: 1.75; }
 
 /* ─── Booking Banner ─────────────────────────────────────────── */
 .booking-banner {
-  background: linear-gradient(135deg, var(--navy-light) 0%, var(--navy) 60%, var(--navy-dark) 100%);
+  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 45%, #b8922a 100%);
   padding: 5rem var(--container-px);
   text-align: center;
   position: relative;
@@ -552,7 +552,7 @@ p { line-height: 1.75; }
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 70% 50%, rgba(196,154,60,0.08) 0%, transparent 60%);
+  background: linear-gradient(135deg, transparent 40%, rgba(196,154,60,0.25) 70%, rgba(196,154,60,0.45) 100%);
   pointer-events: none;
 }
 .booking-banner-inner {
@@ -914,7 +914,7 @@ p { line-height: 1.75; }
 }
 
 .blog-card__title {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: var(--text-primary);
   text-decoration: none;
