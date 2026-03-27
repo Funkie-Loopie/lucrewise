@@ -2,6 +2,17 @@
 
 import Link from 'next/link';
 import { useState, useMemo } from 'react';
+import imageUrlBuilder from '@sanity/image-url';
+import { createClient } from '@sanity/client';
+
+const sanityClient = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'fhqlqt4e',
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  apiVersion: '2024-01-01',
+  useCdn: true,
+});
+const builder = imageUrlBuilder(sanityClient);
+function urlFor(source) { return builder.image(source); }
 
 const TAG_LABELS = {
   'Pre-IPO Opportunities': { en: 'Pre-IPO Opportunities', zh: 'Pre-IPO投资' },
@@ -82,22 +93,32 @@ export default function BlogIndex({ pageContent, posts, isChinese = false }) {
 
           return (
             <article key={post._id} className="blog-article">
-              {post.tag && (
-                <span className="blog-post-tag">{getTagLabel(post.tag, isChinese)}</span>
-              )}
-              <h2>
-                <Link href={href} className="blog-card__title">
-                  {post.title || slug}
+              {post.coverImage?.asset?._ref && (
+                <Link href={href} className="blog-card__thumb" tabIndex={-1} aria-hidden>
+                  <img
+                    src={urlFor(post.coverImage).width(440).height(280).fit('crop').auto('format').url()}
+                    alt={post.coverImage.alt || post.title || ''}
+                  />
                 </Link>
-              </h2>
-              {post.text && (
-                <p className="blog-post-excerpt">
-                  {post.text.length > 200 ? `${post.text.slice(0, 200)}…` : post.text}
-                </p>
               )}
-              <Link href={href} className="blog-post-read-more">
-                {isChinese ? '阅读更多' : 'Read more'} →
-              </Link>
+              <div className="blog-card__body">
+                {post.tag && (
+                  <span className="blog-post-tag">{getTagLabel(post.tag, isChinese)}</span>
+                )}
+                <h2>
+                  <Link href={href} className="blog-card__title">
+                    {post.title || slug}
+                  </Link>
+                </h2>
+                {post.text && (
+                  <p className="blog-post-excerpt">
+                    {post.text.length > 160 ? `${post.text.slice(0, 160)}…` : post.text}
+                  </p>
+                )}
+                <Link href={href} className="blog-post-read-more">
+                  {isChinese ? '阅读更多' : 'Read more'} →
+                </Link>
+              </div>
             </article>
           );
         })}
