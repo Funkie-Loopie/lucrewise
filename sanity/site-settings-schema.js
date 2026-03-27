@@ -23,7 +23,7 @@ export default defineType({
       title: 'Site Name (Logo Text)',
       type: 'string',
       description: 'Brand name shown in the navigation bar.',
-      initialValue: 'Lucrewise',
+      initialValue: 'Golden Blue Family Office',
     }),
     defineField({
       name: 'headerNavItems',
@@ -166,13 +166,13 @@ export default defineType({
       name: 'copyrightEn',
       title: 'Copyright Text (English)',
       type: 'string',
-      description: 'e.g. © 2025 Lucrewise Financial. All rights reserved.',
+      description: 'e.g. © 2025 Golden Blue Family Office Financial. All rights reserved.',
     }),
     defineField({
       name: 'copyrightZh',
       title: 'Copyright Text (Chinese)',
       type: 'string',
-      description: 'e.g. © 2025 Lucrewise Financial. 版权所有。',
+      description: 'e.g. © 2025 Golden Blue Family Office Financial. 版权所有。',
     }),
   ],
   preview: {

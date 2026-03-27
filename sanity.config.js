@@ -24,7 +24,7 @@ if (!projectId) {
 
 export default defineConfig({
   name: 'default',
-  title: 'Lucrewise Financial CMS',
+  title: 'Golden Blue Family Office CMS',
   
   projectId,
   dataset,
