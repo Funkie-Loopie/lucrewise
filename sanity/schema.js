@@ -42,9 +42,9 @@ export default defineType({
     }),
     defineField({
       name: 'text',
-      title: 'Plain Text (for SEO)',
+      title: 'Excerpt',
       type: 'text',
-      description: 'Plain text version of the content for SEO and preview purposes'
+      description: 'A short summary shown in cards, search results, and meta descriptions. Keep it under 160 characters.'
     }),
     defineField({
       name: 'content',
@@ -130,6 +130,51 @@ export default defineType({
       },
       initialValue: 'en'
     }),
+    defineField({
+      name: 'relatedPosts',
+      title: 'Related Posts',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'page' }] }],
+      hidden: ({document}) => {
+        const slug = document?.slug?.current || ''
+        return !slug.startsWith('blog-')
+      },
+    }),
+
+    defineField({
+      name: 'coverImage',
+      title: 'Cover Image',
+      type: 'image',
+      options: { hotspot: true },
+      fields: [{ name: 'alt', type: 'string', title: 'Alternative text' }],
+      hidden: ({document}) => {
+        const slug = document?.slug?.current || ''
+        return !slug.startsWith('blog-')
+      },
+    }),
+
+    defineField({
+      name: 'subtitle',
+      title: 'Subtitle',
+      type: 'string',
+      description: 'Short descriptive line shown below the title on the blog post.',
+      hidden: ({document}) => {
+        const slug = document?.slug?.current || ''
+        return !slug.startsWith('blog-')
+      },
+    }),
+
+    defineField({
+      name: 'publishedAt',
+      title: 'Published Date',
+      type: 'date',
+      description: 'Publication date shown on the blog post.',
+      hidden: ({document}) => {
+        const slug = document?.slug?.current || ''
+        return !slug.startsWith('blog-')
+      },
+    }),
+
     // Single tag selected from a dropdown of 6 fixed options
     // Only shown for blog posts (slug starting with "blog-")
     defineField({
@@ -138,12 +183,12 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          { title: 'Overall Planning', value: 'Overall Planning' },
-          { title: 'Investment Strategy', value: 'Investment Strategy' },
-          { title: 'Insurance Guidance', value: 'Insurance Guidance' },
-          { title: 'Retirement Planning', value: 'Retirement Planning' },
-          { title: 'Employer Services', value: 'Employer Services' },
+          { title: 'Pre-IPO Opportunities', value: 'Pre-IPO Opportunities' },
           { title: 'Tax Planning', value: 'Tax Planning' },
+          { title: 'Retirement Planning', value: 'Retirement Planning' },
+          { title: 'Estate Planning', value: 'Estate Planning' },
+          { title: 'Overall Planning', value: 'Overall Planning' },
+          { title: 'Insurance Guidance', value: 'Insurance Guidance' },
         ],
         layout: 'dropdown',
       },

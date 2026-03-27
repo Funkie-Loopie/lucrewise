@@ -3,8 +3,11 @@
 import Link from 'next/link';
 import PortableTextRenderer from '@/lib/portable-text-renderer';
 
-// Extract a plain-text preview from Portable Text blocks
-function portableTextPreview(blocks, maxLen = 120) {
+/**
+ * Extract a clean excerpt from portable text blocks.
+ * Prefers complete sentences, falls back to word boundary truncation.
+ */
+function portableTextExcerpt(blocks, maxLen = 130) {
   if (!Array.isArray(blocks)) return '';
   const plain = blocks
     .filter((b) => b._type === 'block' && Array.isArray(b.children))
@@ -16,86 +19,74 @@ function portableTextPreview(blocks, maxLen = 120) {
     )
     .join(' ')
     .trim();
-  return plain.length > maxLen ? `${plain.slice(0, maxLen)}…` : plain;
+
+  if (!plain || plain.length <= maxLen) return plain;
+
+  // Try to cut at sentence end within limit
+  const sentenceEnd = plain.slice(0, maxLen).search(/[.!?][^.!?]*$/);
+  if (sentenceEnd > maxLen * 0.5) return plain.slice(0, sentenceEnd + 1);
+
+  // Fall back to word boundary
+  const wordEnd = plain.slice(0, maxLen).lastIndexOf(' ');
+  return plain.slice(0, wordEnd > 0 ? wordEnd : maxLen) + '…';
 }
 
 const SERVICE_ICONS = {
-  'tax-consultation':          '🧾',
-  'insurance-consulting':      '🛡️',
-  'investment-opportunities':  '📈',
-  'business-all-in-one':       '💼',
-  'philanthropic-service':     '🤝',
+  'pre-ipo-opportunities': '🚀',
+  'tax-planning':          '🧾',
+  'retirement-planning':   '🏦',
+  'estate-planning':       '🏛️',
 };
 
 export default function ServicesIndex({ pageContent, services, isChinese = false }) {
-  return (
-    <main style={{ padding: '3rem 1.5rem', maxWidth: 960, margin: '0 auto' }}>
-      <header style={{ marginBottom: '2.5rem' }}>
-        <h1 style={{ fontSize: '2.25rem', fontWeight: 700, marginBottom: '0.75rem' }}>
-          {pageContent?.title || (isChinese ? '服务' : 'Services')}
-        </h1>
-        {pageContent?.content && pageContent.content.length > 0 && (
-          <div style={{ color: '#4b5563', maxWidth: 640 }}>
-            <PortableTextRenderer content={pageContent.content} />
-          </div>
-        )}
-      </header>
+  const title = pageContent?.title || (isChinese ? '服务' : 'Services');
+  const richContent = pageContent?.content?.length > 0 ? pageContent.content : null;
 
-      <section
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-          gap: '1.5rem',
-        }}
-      >
-        {services.map((service) => (
-          <Link
-            key={service.slug}
-            href={service.href}
-            style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
-          >
-            <article
-              style={{
-                height: '100%',
-                padding: '1.75rem 1.5rem',
-                borderRadius: '0.75rem',
-                border: '1px solid #e5e7eb',
-                backgroundColor: '#ffffff',
-                transition: 'box-shadow 0.2s, border-color 0.2s, transform 0.2s',
-                cursor: 'pointer',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = '0 4px 20px rgba(37,99,235,0.12)';
-                e.currentTarget.style.borderColor = '#2563eb';
-                e.currentTarget.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = 'none';
-                e.currentTarget.style.borderColor = '#e5e7eb';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
-            >
-              <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>
-                {SERVICE_ICONS[service.slug] || '📋'}
-              </div>
-              <h2 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '0.5rem', color: '#111827' }}>
-                {service.title}
-              </h2>
-              {(() => {
-                const desc = portableTextPreview(service.content);
-                return desc ? (
-                  <p style={{ fontSize: '0.875rem', color: '#6b7280', lineHeight: 1.6 }}>
-                    {desc}
-                  </p>
-                ) : null;
-              })()}
-              <div style={{ marginTop: '1.25rem', fontSize: '0.875rem', color: '#2563eb', fontWeight: 500 }}>
-                {isChinese ? '了解更多 →' : 'Learn more →'}
-              </div>
-            </article>
-          </Link>
-        ))}
+  return (
+    <main>
+      <section className="about-hero section--light">
+        <div className="container">
+          <p className="about-hero__label">Our Services</p>
+          <h1 className="about-hero__title">{title}</h1>
+          {pageContent?.text && (
+            <p className="about-hero__intro">{pageContent.text}</p>
+          )}
+        </div>
       </section>
+
+      <section className="section section--white">
+        <div className="container">
+          <div className="services-grid">
+            {services.map((service) => {
+              const excerpt = service.text || portableTextExcerpt(service.content);
+              return (
+                <Link key={service.slug} href={service.href} className="service-card">
+                  <div className="service-card__inner">
+                    <div className="service-card__icon">
+                      {SERVICE_ICONS[service.slug] || '📋'}
+                    </div>
+                    <h2 className="service-card__title">{service.title}</h2>
+                    {excerpt && <p className="service-card__desc">{excerpt}</p>}
+                    <span className="service-card__cta">
+                      {isChinese ? '了解更多' : 'Learn more'} →
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {richContent && (
+        <section className="section section--white" style={{ paddingTop: 0 }}>
+          <div className="container">
+            <div className="services-rich-content">
+              <PortableTextRenderer content={richContent} />
+            </div>
+          </div>
+        </section>
+      )}
     </main>
   );
 }

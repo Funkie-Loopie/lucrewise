@@ -2,11 +2,10 @@ import { getSanityPage } from "@/lib/get-sanity-page";
 import ServicesIndex from "@/components/ServicesIndex";
 
 const SERVICE_SLUGS = [
-  { slug: 'tax-consultation',         path: 'tax-consultation' },
-  { slug: 'insurance-consulting',     path: 'insurance-consulting' },
-  { slug: 'investment-opportunities', path: 'investment-opportunities' },
-  { slug: 'business-all-in-one',      path: 'business-all-in-one' },
-  { slug: 'philanthropic-service',    path: 'philanthropic-service' },
+  { slug: 'pre-ipo-opportunities', path: 'pre-ipo-opportunities' },
+  { slug: 'tax-planning',          path: 'tax-planning' },
+  { slug: 'retirement-planning',   path: 'retirement-planning' },
+  { slug: 'estate-planning',       path: 'estate-planning' },
 ];
 
 export default async function Page() {

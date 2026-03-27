@@ -1,50 +1,65 @@
 'use client'
 
 import { PortableText } from '@portabletext/react'
+import imageUrlBuilder from '@sanity/image-url'
+import { createClient } from '@sanity/client'
 
-/**
- * Component to render Sanity Portable Text content
- */
+const sanityClient = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'fhqlqt4e',
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  apiVersion: '2024-01-01',
+  useCdn: true,
+})
+
+const builder = imageUrlBuilder(sanityClient)
+function urlFor(source) {
+  return builder.image(source)
+}
+
 export default function PortableTextRenderer({ content }) {
-  if (!content || !Array.isArray(content)) {
-    return null
-  }
+  if (!content || !Array.isArray(content)) return null
 
   return (
-    <div className="prose prose-lg max-w-none">
+    <div className="prose-content">
       <PortableText
         value={content}
         components={{
+          types: {
+            image: ({ value }) => {
+              if (!value?.asset?._ref) return null
+              return (
+                <figure className="prose-image">
+                  <img
+                    src={urlFor(value).width(900).fit('max').auto('format').url()}
+                    alt={value.alt || ''}
+                    loading="lazy"
+                    style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+                  />
+                </figure>
+              )
+            },
+          },
           block: {
-            h1: ({ children }) => <h1 style={{ fontSize: '2.25rem', fontWeight: 700, marginBottom: '1rem', marginTop: '2rem' }}>{children}</h1>,
-            h2: ({ children }) => <h2 style={{ fontSize: '1.875rem', fontWeight: 600, marginBottom: '0.875rem', marginTop: '1.5rem' }}>{children}</h2>,
-            h3: ({ children }) => <h3 style={{ fontSize: '1.5rem', fontWeight: 600, marginBottom: '0.75rem', marginTop: '1.25rem' }}>{children}</h3>,
-            h4: ({ children }) => <h4 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem', marginTop: '1rem' }}>{children}</h4>,
-            h5: ({ children }) => <h5 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '0.5rem', marginTop: '0.875rem' }}>{children}</h5>,
-            h6: ({ children }) => <h6 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.5rem', marginTop: '0.75rem' }}>{children}</h6>,
-            blockquote: ({ children }) => (
-              <blockquote style={{ borderLeft: '4px solid #e5e7eb', paddingLeft: '1rem', marginLeft: 0, fontStyle: 'italic', color: '#6b7280' }}>
-                {children}
-              </blockquote>
-            ),
-            normal: ({ children }) => <p style={{ marginBottom: '1rem', lineHeight: 1.7 }}>{children}</p>,
+            h1:         ({ children }) => <h1>{children}</h1>,
+            h2:         ({ children }) => <h2>{children}</h2>,
+            h3:         ({ children }) => <h3>{children}</h3>,
+            h4:         ({ children }) => <h4>{children}</h4>,
+            h5:         ({ children }) => <h5>{children}</h5>,
+            h6:         ({ children }) => <h6>{children}</h6>,
+            blockquote: ({ children }) => <blockquote>{children}</blockquote>,
+            normal:     ({ children }) => <p>{children}</p>,
           },
           marks: {
-            strong: ({ children }) => <strong style={{ fontWeight: 700 }}>{children}</strong>,
-            em: ({ children }) => <em style={{ fontStyle: 'italic' }}>{children}</em>,
-            code: ({ children }) => (
-              <code style={{ backgroundColor: '#f3f4f6', padding: '0.125rem 0.375rem', borderRadius: '0.25rem', fontSize: '0.875em' }}>
-                {children}
-              </code>
-            ),
-            underline: ({ children }) => <span style={{ textDecoration: 'underline' }}>{children}</span>,
-            'strike-through': ({ children }) => <span style={{ textDecoration: 'line-through' }}>{children}</span>,
+            strong:          ({ children }) => <strong>{children}</strong>,
+            em:              ({ children }) => <em>{children}</em>,
+            underline:       ({ children }) => <u>{children}</u>,
+            'strike-through':({ children }) => <s>{children}</s>,
+            code:            ({ children }) => <code>{children}</code>,
             link: ({ children, value }) => (
               <a
                 href={value?.href}
                 target={value?.blank ? '_blank' : undefined}
                 rel={value?.blank ? 'noopener noreferrer' : undefined}
-                style={{ color: '#2563eb', textDecoration: 'underline' }}
               >
                 {children}
               </a>
@@ -55,4 +70,3 @@ export default function PortableTextRenderer({ content }) {
     </div>
   )
 }
-

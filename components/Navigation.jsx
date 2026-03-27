@@ -12,12 +12,20 @@ const DEFAULT_NAV = [
   { labelEn: "Contact Us", labelZh: "联系我们", href: "/contact" },
 ];
 
+const SERVICE_SUBNAV = [
+  { labelEn: "Pre-IPO Opportunities", labelZh: "Pre-IPO投资",  href: "/services/pre-ipo-opportunities" },
+  { labelEn: "Tax Planning",          labelZh: "税务规划",      href: "/services/tax-planning" },
+  { labelEn: "Retirement Planning",   labelZh: "退休规划",      href: "/services/retirement-planning" },
+  { labelEn: "Estate Planning",       labelZh: "遗产规划",      href: "/services/estate-planning" },
+];
+
 export default function Navigation({ settings }) {
   const pathname = usePathname();
   const isChinese = pathname.startsWith("/zh");
   const prefix = isChinese ? "/zh" : "";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -42,6 +50,12 @@ export default function Navigation({ settings }) {
     };
   });
 
+  const subNavItems = SERVICE_SUBNAV.map((item) => ({
+    label: isChinese ? item.labelZh : item.labelEn,
+    path: `${prefix}${item.href}`,
+    key: item.href,
+  }));
+
   let alternatePath = isChinese
     ? pathname.replace(/^\/zh/, "") || "/"
     : "/zh" + pathname;
@@ -56,6 +70,7 @@ export default function Navigation({ settings }) {
     pathname.startsWith(href + "/");
 
   const siteName = settings?.siteName || "Golden Blue Family Office";
+  const servicesPath = `${prefix}/services`;
 
   return (
     <nav className="nav-wrapper">
@@ -77,15 +92,40 @@ export default function Navigation({ settings }) {
         {/* Desktop nav */}
         {!isMobile && (
           <div className="nav-links-desktop">
-            {navItems.map((item) => (
-              <Link
-                key={item.key}
-                href={item.path}
-                className={`nav-link${isActive(item.path) ? " nav-link--active" : ""}`}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              if (item.key === "/services") {
+                return (
+                  <div key={item.key} className="nav-dropdown">
+                    <Link
+                      href={item.path}
+                      className={`nav-link nav-dropdown__trigger${isActive(item.path) ? " nav-link--active" : ""}`}
+                    >
+                      {item.label} <span className="nav-dropdown__arrow">▾</span>
+                    </Link>
+                    <div className="nav-dropdown__menu">
+                      {subNavItems.map((sub) => (
+                        <Link
+                          key={sub.key}
+                          href={sub.path}
+                          className={`nav-dropdown__item${isActive(sub.path) ? " nav-dropdown__item--active" : ""}`}
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+              return (
+                <Link
+                  key={item.key}
+                  href={item.path}
+                  className={`nav-link${isActive(item.path) ? " nav-link--active" : ""}`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
 
             <Link href={alternatePath} className="nav-lang-btn">
               {isChinese ? "English" : "中文"}
@@ -106,16 +146,54 @@ export default function Navigation({ settings }) {
       {/* Mobile menu */}
       {isMobile && (
         <div className={`nav-mobile${isMobileMenuOpen ? " open" : ""}`}>
-          {navItems.map((item) => (
-            <Link
-              key={item.key}
-              href={item.path}
-              className={`nav-mobile-link${isActive(item.path) ? " nav-mobile-link--active" : ""}`}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {navItems.map((item) => {
+            if (item.key === "/services") {
+              return (
+                <div key={item.key}>
+                  <div className="nav-mobile-services-row">
+                    <Link
+                      href={item.path}
+                      className={`nav-mobile-link${isActive(item.path) ? " nav-mobile-link--active" : ""}`}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                    <button
+                      className="nav-mobile-services-toggle"
+                      onClick={() => setServicesOpen((v) => !v)}
+                      aria-label="Toggle services"
+                    >
+                      {servicesOpen ? "▴" : "▾"}
+                    </button>
+                  </div>
+                  {servicesOpen && (
+                    <div className="nav-mobile-subnav">
+                      {subNavItems.map((sub) => (
+                        <Link
+                          key={sub.key}
+                          href={sub.path}
+                          className={`nav-mobile-sublink${isActive(sub.path) ? " nav-mobile-sublink--active" : ""}`}
+                          onClick={() => { setIsMobileMenuOpen(false); setServicesOpen(false); }}
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+            return (
+              <Link
+                key={item.key}
+                href={item.path}
+                className={`nav-mobile-link${isActive(item.path) ? " nav-mobile-link--active" : ""}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
           <div className="nav-mobile-actions">
             <Link
               href={alternatePath}

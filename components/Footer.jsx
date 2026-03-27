@@ -7,11 +7,10 @@ const DEFAULT_COL2_HEADING = { en: "Services",  zh: "服务" };
 const DEFAULT_COL3_HEADING = { en: "Company",   zh: "关于我们" };
 
 const DEFAULT_COL2_LINKS = [
-  { labelEn: "Investment Opportunities", labelZh: "投资机会",  href: "/services/investment-opportunities" },
-  { labelEn: "Insurance Consulting",     labelZh: "保险规划",  href: "/services/insurance-consulting" },
-  { labelEn: "Tax Guidance",             labelZh: "税务咨询",  href: "/services/tax-consultation" },
-  { labelEn: "Business All-in-One",      labelZh: "企业一站式", href: "/services/business-all-in-one" },
-  { labelEn: "Philanthropic Service",    labelZh: "慈善捐赠",  href: "/services/philanthropic-service" },
+  { labelEn: "Pre-IPO Opportunities", labelZh: "Pre-IPO投资",  href: "/services/pre-ipo-opportunities" },
+  { labelEn: "Tax Planning",          labelZh: "税务规划",      href: "/services/tax-planning" },
+  { labelEn: "Retirement Planning",   labelZh: "退休规划",      href: "/services/retirement-planning" },
+  { labelEn: "Estate Planning",       labelZh: "遗产和传承规划", href: "/services/estate-planning" },
 ];
 
 const DEFAULT_COL3_LINKS = [
@@ -35,7 +34,7 @@ export default function Footer({ settings }) {
     : (settings?.footerCol3HeadingEn || DEFAULT_COL3_HEADING.en);
   const col3Links = settings?.footerCol3Links?.length > 0 ? settings.footerCol3Links : DEFAULT_COL3_LINKS;
 
-  const email = settings?.email || "Support@lucrewisefin.com";
+  const email = settings?.email || "support@goldenbluefo.com";
   const phone = settings?.phone || "+1 (925) 968-8388";
   const siteName = settings?.siteName || "Golden Blue Family Office";
 

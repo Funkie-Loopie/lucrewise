@@ -23,7 +23,7 @@ export default defineType({
       title: 'Site Name (Logo Text)',
       type: 'string',
       description: 'Brand name shown in the navigation bar.',
-      initialValue: 'Lucrewise',
+      initialValue: 'Golden Blue Family Office',
     }),
     defineField({
       name: 'headerNavItems',
@@ -143,18 +143,36 @@ export default defineType({
     defineField({ name: 'twitterUrl',  title: 'X / Twitter URL', type: 'url' }),
     defineField({ name: 'youtubeUrl',  title: 'YouTube URL', type: 'url' }),
 
+    // ─── Blog Disclaimer ──────────────────────────────────
+    defineField({
+      name: 'blogDisclaimerZh',
+      title: 'Blog Disclaimer (Chinese)',
+      type: 'text',
+      rows: 4,
+      description: 'Shown at the bottom of every blog post.',
+      initialValue: '免责声明：本文内容仅供参考，不构成任何投资、税务、法律或财务建议。投资有风险，过去的表现不代表未来的结果。请在做出任何财务决策之前，咨询持牌专业人士。',
+    }),
+    defineField({
+      name: 'blogDisclaimerEn',
+      title: 'Blog Disclaimer (English)',
+      type: 'text',
+      rows: 4,
+      description: 'Shown at the bottom of every blog post.',
+      initialValue: 'Disclaimer: The content of this article is for informational purposes only and does not constitute investment, tax, legal, or financial advice. All investments involve risk and past performance is not indicative of future results. Please consult a licensed professional before making any financial decisions.',
+    }),
+
     // ─── Footer — Copyright ────────────────────────────────
     defineField({
       name: 'copyrightEn',
       title: 'Copyright Text (English)',
       type: 'string',
-      description: 'e.g. © 2025 Lucrewise Financial. All rights reserved.',
+      description: 'e.g. © 2025 Golden Blue Family Office Financial. All rights reserved.',
     }),
     defineField({
       name: 'copyrightZh',
       title: 'Copyright Text (Chinese)',
       type: 'string',
-      description: 'e.g. © 2025 Lucrewise Financial. 版权所有。',
+      description: 'e.g. © 2025 Golden Blue Family Office Financial. 版权所有。',
     }),
   ],
   preview: {
