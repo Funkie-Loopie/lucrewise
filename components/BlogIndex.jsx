@@ -8,6 +8,8 @@ const TAG_LABELS = {
   'Tax Planning':          { en: 'Tax Planning',          zh: '税务规划' },
   'Retirement Planning':   { en: 'Retirement Planning',   zh: '退休规划' },
   'Estate Planning':       { en: 'Estate Planning',       zh: '遗产和传承规划' },
+  'Overall Planning':      { en: 'Overall Planning',      zh: '整体规划' },
+  'Insurance Guidance':    { en: 'Insurance Guidance',    zh: '保险指南' },
 };
 
 function getTagLabel(tag, isChinese) {
@@ -31,39 +33,48 @@ export default function BlogIndex({ pageContent, posts, isChinese = false }) {
   }, [posts, activeTag]);
 
   return (
-    <main className="inner-page">
-      <header className="page-header">
-        <h1 className="page-header__title">
-          {pageContent?.title || (isChinese ? '博客' : 'Blog')}
-        </h1>
-        {pageContent?.text && (
-          <p className="page-header__desc">{pageContent.text}</p>
-        )}
+    <main>
+      <section className="about-hero section--light">
+        <div className="container">
+          <p className="about-hero__label">Blog</p>
+          <h1 className="about-hero__title">
+            {pageContent?.title || (isChinese ? '最新文章' : 'Insights & Articles')}
+          </h1>
+          {pageContent?.text && (
+            <p className="about-hero__intro">{pageContent.text}</p>
+          )}
+        </div>
+      </section>
 
-        {tags.length > 0 && (
-          <div className="blog-filters">
-            <button
-              type="button"
-              onClick={() => setActiveTag('all')}
-              className={`blog-tag-pill${activeTag === 'all' ? ' blog-tag-pill--active' : ''}`}
-            >
-              {isChinese ? '全部' : 'All'}
-            </button>
-            {tags.map((tag) => (
+      {tags.length > 0 && (
+        <div className="blog-filters-bar">
+          <div className="container">
+            <div className="blog-filters">
               <button
-                key={tag}
                 type="button"
-                onClick={() => setActiveTag(tag)}
-                className={`blog-tag-pill${activeTag === tag ? ' blog-tag-pill--active' : ''}`}
+                onClick={() => setActiveTag('all')}
+                className={`blog-tag-pill${activeTag === 'all' ? ' blog-tag-pill--active' : ''}`}
               >
-                {getTagLabel(tag, isChinese)}
+                {isChinese ? '全部' : 'All'}
               </button>
-            ))}
+              {tags.map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => setActiveTag(tag)}
+                  className={`blog-tag-pill${activeTag === tag ? ' blog-tag-pill--active' : ''}`}
+                >
+                  {getTagLabel(tag, isChinese)}
+                </button>
+              ))}
+            </div>
           </div>
-        )}
-      </header>
+        </div>
+      )}
 
-      <section className="blog-posts">
+      <section className="section section--white">
+        <div className="container">
+        <div className="blog-posts">
         {filteredPosts.map((post) => {
           const slug = post.slug?.current || '';
           const shortSlug = slug.replace(/^blog-/, '');
@@ -96,6 +107,8 @@ export default function BlogIndex({ pageContent, posts, isChinese = false }) {
             {isChinese ? '暂无文章。' : 'No posts found for this tag.'}
           </p>
         )}
+        </div>
+        </div>
       </section>
     </main>
   );

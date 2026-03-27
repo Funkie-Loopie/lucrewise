@@ -465,7 +465,7 @@ p { line-height: 1.75; }
   cursor: pointer;
   transition: all 0.15s;
 }
-.blog-tag-pill:hover { border-color: var(--navy); color: var(--navy); }
+.blog-tag-pill:hover { border-color: var(--navy); }
 .blog-tag-pill--active {
   background: var(--navy);
   color: #fff;
@@ -615,11 +615,18 @@ p { line-height: 1.75; }
 }
 
 /* ─── Blog Index ─────────────────────────────────────────────── */
+.blog-filters-bar {
+  background: var(--bg-white);
+  padding: 1rem var(--container-px);
+  padding-top: var(--container-px);
+  margin-bottom: -4rem;
+}
+
 .blog-filters {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 1.25rem;
+  margin: 0;
 }
 
 .blog-posts {

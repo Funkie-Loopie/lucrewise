@@ -34,7 +34,7 @@ export default function Footer({ settings }) {
     : (settings?.footerCol3HeadingEn || DEFAULT_COL3_HEADING.en);
   const col3Links = settings?.footerCol3Links?.length > 0 ? settings.footerCol3Links : DEFAULT_COL3_LINKS;
 
-  const email = settings?.email || "Support@lucrewisefin.com";
+  const email = settings?.email || "support@goldenbluefo.com";
   const phone = settings?.phone || "+1 (925) 968-8388";
   const siteName = settings?.siteName || "Golden Blue Family Office";
 

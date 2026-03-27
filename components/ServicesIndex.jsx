@@ -43,35 +43,49 @@ export default function ServicesIndex({ pageContent, services, isChinese = false
   const richContent = pageContent?.content?.length > 0 ? pageContent.content : null;
 
   return (
-    <main className="inner-page">
-      <header className="page-header">
-        <h1 className="page-header__title">{title}</h1>
-      </header>
+    <main>
+      <section className="about-hero section--light">
+        <div className="container">
+          <p className="about-hero__label">Our Services</p>
+          <h1 className="about-hero__title">{title}</h1>
+          {pageContent?.text && (
+            <p className="about-hero__intro">{pageContent.text}</p>
+          )}
+        </div>
+      </section>
 
-      <section className="services-grid">
-        {services.map((service) => {
-          const excerpt = service.text || portableTextExcerpt(service.content);
-          return (
-            <Link key={service.slug} href={service.href} className="service-card">
-              <div className="service-card__inner">
-                <div className="service-card__icon">
-                  {SERVICE_ICONS[service.slug] || '📋'}
-                </div>
-                <h2 className="service-card__title">{service.title}</h2>
-                {excerpt && <p className="service-card__desc">{excerpt}</p>}
-                <span className="service-card__cta">
-                  {isChinese ? '了解更多' : 'Learn more'} →
-                </span>
-              </div>
-            </Link>
-          );
-        })}
+      <section className="section section--white">
+        <div className="container">
+          <div className="services-grid">
+            {services.map((service) => {
+              const excerpt = service.text || portableTextExcerpt(service.content);
+              return (
+                <Link key={service.slug} href={service.href} className="service-card">
+                  <div className="service-card__inner">
+                    <div className="service-card__icon">
+                      {SERVICE_ICONS[service.slug] || '📋'}
+                    </div>
+                    <h2 className="service-card__title">{service.title}</h2>
+                    {excerpt && <p className="service-card__desc">{excerpt}</p>}
+                    <span className="service-card__cta">
+                      {isChinese ? '了解更多' : 'Learn more'} →
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
       </section>
 
       {richContent && (
-        <div className="services-rich-content">
-          <PortableTextRenderer content={richContent} />
-        </div>
+        <section className="section section--white" style={{ paddingTop: 0 }}>
+          <div className="container">
+            <div className="services-rich-content">
+              <PortableTextRenderer content={richContent} />
+            </div>
+          </div>
+        </section>
       )}
     </main>
   );

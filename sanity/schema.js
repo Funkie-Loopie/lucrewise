@@ -142,6 +142,8 @@ export default defineType({
           { title: 'Tax Planning', value: 'Tax Planning' },
           { title: 'Retirement Planning', value: 'Retirement Planning' },
           { title: 'Estate Planning', value: 'Estate Planning' },
+          { title: 'Overall Planning', value: 'Overall Planning' },
+          { title: 'Insurance Guidance', value: 'Insurance Guidance' },
         ],
         layout: 'dropdown',
       },
