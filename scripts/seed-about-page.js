@@ -8,7 +8,7 @@
 
 import { createClient } from '@sanity/client'
 import dotenv from 'dotenv'
-dotenv.config({ path: '.env.local' })
+dotenv.config({ path: '.env' })
 dotenv.config({ path: '.env' })
 
 const client = createClient({

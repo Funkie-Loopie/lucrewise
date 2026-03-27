@@ -130,6 +130,51 @@ export default defineType({
       },
       initialValue: 'en'
     }),
+    defineField({
+      name: 'relatedPosts',
+      title: 'Related Posts',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'page' }] }],
+      hidden: ({document}) => {
+        const slug = document?.slug?.current || ''
+        return !slug.startsWith('blog-')
+      },
+    }),
+
+    defineField({
+      name: 'coverImage',
+      title: 'Cover Image',
+      type: 'image',
+      options: { hotspot: true },
+      fields: [{ name: 'alt', type: 'string', title: 'Alternative text' }],
+      hidden: ({document}) => {
+        const slug = document?.slug?.current || ''
+        return !slug.startsWith('blog-')
+      },
+    }),
+
+    defineField({
+      name: 'subtitle',
+      title: 'Subtitle',
+      type: 'string',
+      description: 'Short descriptive line shown below the title on the blog post.',
+      hidden: ({document}) => {
+        const slug = document?.slug?.current || ''
+        return !slug.startsWith('blog-')
+      },
+    }),
+
+    defineField({
+      name: 'publishedAt',
+      title: 'Published Date',
+      type: 'date',
+      description: 'Publication date shown on the blog post.',
+      hidden: ({document}) => {
+        const slug = document?.slug?.current || ''
+        return !slug.startsWith('blog-')
+      },
+    }),
+
     // Single tag selected from a dropdown of 6 fixed options
     // Only shown for blog posts (slug starting with "blog-")
     defineField({

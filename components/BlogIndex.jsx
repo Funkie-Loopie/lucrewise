@@ -86,7 +86,7 @@ export default function BlogIndex({ pageContent, posts, isChinese = false }) {
                 <span className="blog-post-tag">{getTagLabel(post.tag, isChinese)}</span>
               )}
               <h2>
-                <Link href={href} className="blog-post-title">
+                <Link href={href} className="blog-card__title">
                   {post.title || slug}
                 </Link>
               </h2>

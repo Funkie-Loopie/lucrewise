@@ -15,7 +15,7 @@ import { createClient } from '@sanity/client'
 import dotenv from 'dotenv'
 import { htmlToPortableText } from '../lib/html-to-portable-text.js'
 
-dotenv.config({ path: '.env.local' })
+dotenv.config({ path: '.env' })
 dotenv.config({ path: '.env' })
 
 const client = createClient({

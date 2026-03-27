@@ -1,5 +1,6 @@
 import { getSanityPage } from "@/lib/get-sanity-page";
-import ContentPage from "@/components/ContentPage";
+import { getSiteSettings } from "@/lib/sanity";
+import BlogPostPage from "@/components/BlogPostPage";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -16,7 +17,10 @@ export default async function Page({ params }) {
   const { slug } = await params;
 
   // 中文頁面優先抓 zh，沒有就 fallback 到 en
-  const contentZh = await getSanityPage(slug, "zh");
+  const [contentZh, settings] = await Promise.all([
+    getSanityPage(slug, "zh"),
+    getSiteSettings(),
+  ]);
   const content = contentZh || (await getSanityPage(slug, "en"));
 
   if (!content) {
@@ -28,6 +32,12 @@ export default async function Page({ params }) {
     );
   }
 
-  return <ContentPage content={content} />;
+  return (
+    <BlogPostPage
+      content={content}
+      isChinese={true}
+      disclaimer={settings?.blogDisclaimerZh || null}
+    />
+  );
 }
 

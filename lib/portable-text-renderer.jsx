@@ -1,6 +1,20 @@
 'use client'
 
 import { PortableText } from '@portabletext/react'
+import imageUrlBuilder from '@sanity/image-url'
+import { createClient } from '@sanity/client'
+
+const sanityClient = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'fhqlqt4e',
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  apiVersion: '2024-01-01',
+  useCdn: true,
+})
+
+const builder = imageUrlBuilder(sanityClient)
+function urlFor(source) {
+  return builder.image(source)
+}
 
 export default function PortableTextRenderer({ content }) {
   if (!content || !Array.isArray(content)) return null
@@ -10,6 +24,21 @@ export default function PortableTextRenderer({ content }) {
       <PortableText
         value={content}
         components={{
+          types: {
+            image: ({ value }) => {
+              if (!value?.asset?._ref) return null
+              return (
+                <figure className="prose-image">
+                  <img
+                    src={urlFor(value).width(900).fit('max').auto('format').url()}
+                    alt={value.alt || ''}
+                    loading="lazy"
+                    style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+                  />
+                </figure>
+              )
+            },
+          },
           block: {
             h1:         ({ children }) => <h1>{children}</h1>,
             h2:         ({ children }) => <h2>{children}</h2>,

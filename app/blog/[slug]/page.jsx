@@ -1,5 +1,6 @@
 import { getSanityPage } from "@/lib/get-sanity-page";
-import ContentPage from "@/components/ContentPage";
+import { getSiteSettings } from "@/lib/sanity";
+import BlogPostPage from "@/components/BlogPostPage";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -16,7 +17,10 @@ export default async function Page({ params }) {
   const { slug } = await params;
 
   // Prefer English for /blog, fallback to Chinese
-  const contentEn = await getSanityPage(slug, "en");
+  const [contentEn, settings] = await Promise.all([
+    getSanityPage(slug, "en"),
+    getSiteSettings(),
+  ]);
   const content = contentEn || (await getSanityPage(slug, "zh"));
 
   if (!content) {
@@ -28,6 +32,12 @@ export default async function Page({ params }) {
     );
   }
 
-  return <ContentPage content={content} />;
+  return (
+    <BlogPostPage
+      content={content}
+      isChinese={false}
+      disclaimer={settings?.blogDisclaimerEn || null}
+    />
+  );
 }
 
